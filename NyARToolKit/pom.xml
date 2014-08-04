@@ -1,0 +1,38 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>jp.nyatla.nyartoolkit</groupId>
+	<artifactId>NyARToolkit</artifactId>
+	<version>4.4.1</version>
+	<name>NyARToolkit</name>
+	<dependencies>
+		<dependency>
+			<groupId>javax.java3d</groupId>
+			<artifactId>j3dcore</artifactId>
+			<version>1.5.1</version>
+			<scope>system</scope>
+			<systemPath>${java.home}/lib/ext/j3dcore.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>java3d</groupId>
+			<artifactId>vecmath</artifactId>
+			<version>1.5.1</version>
+			<scope>system</scope>
+			<systemPath>${java.home}/lib/ext/vecmath.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>java3d</groupId>
+			<artifactId>j3d-core-utils</artifactId>
+			<version>1.5.1</version>
+			<scope>system</scope>
+			<systemPath>${java.home}/lib/ext/j3dutils.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>javax.media</groupId>
+			<artifactId>jmf</artifactId>
+			<version>2.1.1e</version>
+			<scope>system</scope>
+			<systemPath>${java.home}/lib/ext/jmf.jar</systemPath>
+		</dependency>
+	</dependencies>
+</project>

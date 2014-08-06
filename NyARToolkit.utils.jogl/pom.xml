@@ -1,0 +1,39 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>jp.nyatla.nyartoolkit</groupId>
+	<artifactId>NyARToolkit.utils.jogl</artifactId>
+	<version>4.4.1</version>
+	<name>NyARToolkit.utils.jogl</name>
+	<dependencies>
+		<dependency>
+			<groupId>jp.nyatla.nyartoolkit</groupId>
+			<artifactId>NyARToolkit</artifactId>
+			<version>4.4.1</version>
+		</dependency>
+		<dependency>
+			<groupId>jp.nyatla.nyartoolkit</groupId>
+			<artifactId>NyARToolkit.utils.j2se</artifactId>
+			<version>4.4.1</version>
+		</dependency>
+		<dependency>
+			<groupId>jp.nyatla.nyartoolkit</groupId>
+			<artifactId>NyARToolkit.utils.jmf</artifactId>
+			<version>4.4.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jogamp.gluegen</groupId>
+			<artifactId>gluegen-rt-main</artifactId>
+            <version>1.1.1e</version>
+            <scope>system</scope>
+            <systemPath>${java.home}/lib/ext/gluegen-rt.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>org.jogamp.jogl</groupId>
+			<artifactId>jogl-main</artifactId>
+			<version>1.1.1e</version>
+            <scope>system</scope>
+            <systemPath>${java.home}/lib/ext/jogl.jar</systemPath>
+		</dependency>
+	</dependencies>
+</project>

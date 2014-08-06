@@ -5,7 +5,7 @@ forked from NyARToolkit-4.1.1 (http://sourceforge.jp/projects/nyartoolkit/releas
 
 - Convert NyARToolkit Projects to Maven Project format.
 
-## Setup
+## Setup (Windows)
 1. download JOGL.  
 http://sixwish.jp/Nyartoolkit/Java/section03/  
 => jogl-1.1.1a-windows-i586.zip  

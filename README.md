@@ -3,7 +3,12 @@ NyARToolkit
 
 forked from NyARToolkit-4.1.1 (http://sourceforge.jp/projects/nyartoolkit/releases/).
 
-- Convert NyARToolkit Projects to Maven Project format.
+- convert NyARToolkit Projects to Maven Project format.
+- integrating the webcam-capture library(https://github.com/sarxos/webcam-capture) with NyARToolkit java3d utils(instead of JMF).  
+The class for using webcam-capture library is contained in the following projects. 
+ - NyARToolkit.utils.java3d.webcam-capture
+ - NyARToolkit.utils.webcam-capture
+ - Sample project is NyARToolkit.sample.java3d.webcam-capture.
 
 ## Setup (Windows)
 1. download JOGL.  

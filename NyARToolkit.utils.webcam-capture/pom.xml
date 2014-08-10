@@ -1,0 +1,38 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>jp.qualitas.nyartoolkit</groupId>
+	<artifactId>NyARToolkit.utils.webcam</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>NyARToolkit webcam-capture utils.</name>
+	
+	<repositories>
+		<repository>
+			<id>Sonatype OSS Snapshot Repository</id>
+			<url>http://oss.sonatype.org/content/repositories/snapshots</url>
+		</repository>
+	</repositories>
+
+	<dependencies>
+		<dependency>
+			<groupId>jp.nyatla.nyartoolkit</groupId>
+			<artifactId>NyARToolkit</artifactId>
+			<version>4.4.1</version>
+		</dependency>
+		<dependency>
+			<groupId>jp.nyatla.nyartoolkit</groupId>
+			<artifactId>NyARToolkit.utils.j2se</artifactId>
+			<version>4.4.1</version>
+		</dependency>
+		<dependency>
+			<groupId>com.github.sarxos</groupId>
+			<artifactId>webcam-capture</artifactId>
+			<version>0.3.10-SNAPSHOT</version>
+		</dependency>
+        <dependency>
+            <groupId>com.google.zxing</groupId>
+            <artifactId>javase</artifactId>
+            <version>2.1</version>
+        </dependency>
+	</dependencies>
+</project>

@@ -1,29 +1,3 @@
-/* 
- * PROJECT: NyARToolkit Java3d sample program.
- * --------------------------------------------------------------------------------
- * The MIT License
- * Copyright (c) 2008 nyatla
- * airmail(at)ebony.plala.or.jp
- * http://nyatla.jp/nyartoolkit/
- * 
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- * 
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- * 
- */
 package jp.qualitas.nyartoolkit.java3d.webcam.sample;
 
 import java.awt.BorderLayout;
@@ -82,7 +56,7 @@ public class NyARJava3D extends JFrame implements NyARSingleMarkerBehaviorListen
 	private Locale locale;
 
 	private VirtualUniverse universe;
-
+	
 	public static void main(String[] args)
 	{
 		try {
@@ -91,7 +65,7 @@ public class NyARJava3D extends JFrame implements NyARSingleMarkerBehaviorListen
 			frame.setVisible(true);
 			Insets ins = frame.getInsets();
 			frame.setSize(320 + ins.left + ins.right, 240 + ins.top + ins.bottom);
-			frame.startCapture();
+//			frame.startCapture();
 			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -108,30 +82,9 @@ public class NyARJava3D extends JFrame implements NyARSingleMarkerBehaviorListen
 
 	public void startCapture() throws Exception
 	{
+		// キャプチャ開始
 		nya_behavior.start();
-	}
-
-	public NyARJava3D() throws Exception
-	{
-		super("Java3D Example NyARToolkit");
-		this.addWindowListener(new WindowAdapter() {
-			public void windowClosing(WindowEvent e)
-			{
-				try {
-					nya_behavior.stop();
-				} catch (NyARException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				System.exit(0);
-			}
-		});
-		//NyARToolkitの準備
-		// NyARCode ar_code = NyARCode.createFromARPattFile(new FileInputStream(CARCODE_FILE),16, 16);
-		NyARCode ar_code = NyARCode.createFromARPattFile(this.getClass().getResourceAsStream(CARCODE_FILE),16, 16);
-		ar_param = J3dNyARParam.loadARParamFile(this.getClass().getResourceAsStream(PARAM_FILE));
-		ar_param.changeScreenSize(320, 240);
-
+		
 		//localeの作成とlocateとviewの設定
 		universe = new VirtualUniverse();
 		locale = new Locale(universe);
@@ -176,8 +129,6 @@ public class NyARJava3D extends JFrame implements NyARSingleMarkerBehaviorListen
 		transform.addChild(createSceneGraph());
 		root.addChild(transform);
 
-		//NyARToolkitのBehaviorを作る。(マーカーサイズはメートルで指定すること)
-		nya_behavior = new NyARSingleMarkerBehaviorHolder(ar_param, 30f, ar_code, 0.08);
 		//Behaviorに連動するグループをセット
 		nya_behavior.setTransformGroup(transform);
 		nya_behavior.setBackGround(background);
@@ -194,6 +145,32 @@ public class NyARJava3D extends JFrame implements NyARSingleMarkerBehaviorListen
 		add(canvas, BorderLayout.CENTER);
 	}
 
+	public NyARJava3D() throws Exception
+	{
+		super("Java3D Example NyARToolkit");
+		this.addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent e)
+			{
+				try {
+					nya_behavior.stop();
+				} catch (NyARException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				System.exit(0);
+			}
+		});
+//		//NyARToolkitの準備
+		NyARCode ar_code = NyARCode.createFromARPattFile(this.getClass().getResourceAsStream(CARCODE_FILE),16, 16);
+		ar_param = J3dNyARParam.loadARParamFile(this.getClass().getResourceAsStream(PARAM_FILE));
+		ar_param.changeScreenSize(320, 240);
+
+		//NyARToolkitのBehaviorを作る。(マーカーサイズはメートルで指定すること)
+		nya_behavior = new NyARSingleMarkerBehaviorHolder(ar_param, 30f, ar_code, 0.08);
+		nya_behavior.setWebcapOpenListener(this);
+		nya_behavior.open();
+	}
+
 	/**
 	 * シーングラフを作って、そのノードを返す。
 	 * このノードは40mmの色つき立方体を表示するシーン。ｚ軸を基準に20mm上に浮かせてる。
@@ -208,5 +185,14 @@ public class NyARJava3D extends JFrame implements NyARSingleMarkerBehaviorListen
 		tg.setTransform(mt);
 		tg.addChild(new ColorCube(20 * 0.001));
 		return tg;
+	}
+
+	public void onWebcamOpen() {
+		try {
+			this.startCapture();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 	}
 }

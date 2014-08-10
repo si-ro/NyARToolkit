@@ -50,16 +50,17 @@ public class J3dNyARRaster_RGB extends WebCamNyARRGBRaster
 
 	/**
 	 * WebCamのキャプチャ画像をこのクラスのBufferedImageにコピーします。
-	 * @param i_buffer
+	 * @param i_img
 	 * 画像の格納されたバッファを指定して下さい。
 	 * 画像サイズはコンストラクタで与えたパラメタと同じサイズである必要があります。
 	 */
 	public void setBuffer(BufferedImage i_img) throws NyARException
 	{
 		super.wrapImage(i_img);
+
 		synchronized (this){
 			//キャプチャデータをi2dのバッファにコピーする。
-			//現在はJmfNyARRaster_RGBでRGB画像がノーマライズされているので、
+			//現在はNyARRaster_RGBでRGB画像がノーマライズされているので、
 			//ここでもう一度flipする。（これ省略したいなあ…。）
 			byte[] src=(byte[])this.getBuffer();
 			final int length = this._size.w * 3;
@@ -73,15 +74,10 @@ public class J3dNyARRaster_RGB extends WebCamNyARRGBRaster
 		}
 	}
 
-	public J3dNyARRaster_RGB(int i_width,int i_height) throws NyARException
-	{
-		super(i_width, i_height);
-		//bufferdimageの種類を決める
-		if(this.getBufferType()!=NyARBufferType.BYTE1D_R8G8B8_24){
-			throw new NyARException();
-		}
+	public J3dNyARRaster_RGB(BufferedImage i_img) throws NyARException {
+		super(i_img);
 		//RGBのラスタを作る。
-		this.bufferd_image = new BufferedImage(this._size.w, this._size.h, BufferedImage.TYPE_3BYTE_BGR);
+		this.bufferd_image = i_img;
 		i2d_buf = ((DataBufferByte) bufferd_image.getRaster().getDataBuffer()).getData();
 		this.imc2d = new ImageComponent2D(ImageComponent2D.FORMAT_RGB, this.bufferd_image, true, true);
 		imc2d.setCapability(ImageComponent.ALLOW_IMAGE_WRITE);

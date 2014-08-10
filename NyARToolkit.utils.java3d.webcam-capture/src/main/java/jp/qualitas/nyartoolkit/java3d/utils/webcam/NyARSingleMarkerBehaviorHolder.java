@@ -92,9 +92,17 @@ public class NyARSingleMarkerBehaviorHolder implements WebcamListener
 
 	//Behaviorホルダ
 	private NyARBehavior _nya_behavior;
-
+	private float i_rate;
+	private NyARCode i_ar_code;
+	private double i_marker_width;
+	private NyARSingleMarkerBehaviorListener listener;
+	
 	public NyARSingleMarkerBehaviorHolder(NyARParam i_cparam, float i_rate, NyARCode i_ar_code, double i_marker_width) throws NyARException
 	{
+		this.i_rate = i_rate;
+		this.i_ar_code = i_ar_code;
+		this.i_marker_width = i_marker_width;
+		
 		this._nya_behavior = null;
 		final NyARIntSize scr_size = i_cparam.getScreenSize();
 		this._cparam = i_cparam;
@@ -106,14 +114,10 @@ public class NyARSingleMarkerBehaviorHolder implements WebcamListener
 		this._capture.addWebcamListener(this);
 		this.updater = new ImageUpdater();
 		
-//		JmfCaptureDeviceList devlist=new JmfCaptureDeviceList();
-//		this._capture=devlist.getDevice(0);
-//		this._capture.setCaptureFormat(scr_size.w, scr_size.h,15f);
-//		this._capture.setOnCapture(this);
-		//this._nya_raster = new J3dNyARRaster_RGB(this._cparam,this._capture.getCaptureFormat());
-		this._nya_raster = new J3dNyARRaster_RGB(scr_size.w, scr_size.h);
-		this._nya =NyARSingleDetectMarker.createInstance(this._cparam, i_ar_code, i_marker_width);
-		this._nya_behavior = new NyARBehavior(this._nya, this._nya_raster, i_rate);
+		
+//		this._nya_raster = new J3dNyARRaster_RGB(scr_size.w, scr_size.h);
+//		this._nya =NyARSingleDetectMarker.createInstance(this._cparam, i_ar_code, i_marker_width);
+//		this._nya_behavior = new NyARBehavior(this._nya, this._nya_raster, i_rate);
 	}
 
 	public Behavior getBehavior()
@@ -142,15 +146,19 @@ public class NyARSingleMarkerBehaviorHolder implements WebcamListener
 		//コール先で排他制御
 		this._nya_behavior.setRelatedTransformGroup(i_trgroup);
 	}
-
-	/**
-	 * 座標系再計算後に呼び出されるリスナです。
-	 * @param i_listener
-	 */
 	public void setUpdateListener(NyARSingleMarkerBehaviorListener i_listener)
 	{
 		//コール先で排他制御
 		this._nya_behavior.setUpdateListener(i_listener);
+	}
+	
+	/**
+	 * 座標系再計算後に呼び出されるリスナです。
+	 * @param i_listener
+	 */
+	public void setWebcapOpenListener(NyARSingleMarkerBehaviorListener i_listener)
+	{
+		this.listener = i_listener;
 	}
 
 //	/**
@@ -167,7 +175,14 @@ public class NyARSingleMarkerBehaviorHolder implements WebcamListener
 //		}
 //	}
 	/**
-	 * Open webcam and start rendering.
+	 * Open webcam.
+	 */
+	public void open() {
+		System.out.println("trying to open attached webcam");
+		this._capture.open();
+	}
+	/**
+	 * start rendering.
 	 */
 	public void start() throws NyARException {
 
@@ -175,9 +190,13 @@ public class NyARSingleMarkerBehaviorHolder implements WebcamListener
 			return;
 		}
 
+		this._nya_raster = new J3dNyARRaster_RGB(this._capture.getImage());
+		this._nya =NyARSingleDetectMarker.createInstance(this._cparam, i_ar_code, i_marker_width);
+		this._nya_behavior = new NyARBehavior(this._nya, this._nya_raster, i_rate);
+		
 		this._capture.addWebcamListener(this);
 
-//		LOG.debug("Starting panel rendering and trying to open attached webcam");
+		System.out.println("Starting image rendering");
 
 		updater.start();
 
@@ -205,8 +224,7 @@ public class NyARSingleMarkerBehaviorHolder implements WebcamListener
 		}
 
 		this._capture.removeWebcamListener(this);
-
-//		LOG.debug("Stopping panel rendering and closing attached webcam");
+		System.out.println("Stopping panel rendering and closing attached webcam");
 
 		try {
 			updater.stop();
@@ -225,39 +243,24 @@ public class NyARSingleMarkerBehaviorHolder implements WebcamListener
 			throw new NyARException(e);
 		}
 	}
-	
-//	public void start() throws NyARException
-//	{
-//		//開始
-//		this._capture.start();
-//	}
-//
-//	public void stop()
-//	{
-//		this._capture.stop();
-//	}
 
 	public void webcamClosed(WebcamEvent arg0) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	public void webcamDisposed(WebcamEvent arg0) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	public void webcamOpen(WebcamEvent webcamEvent) {
+		System.out.println("success opening Webcam.");
+		if (listener != null) {
+			listener.onWebcamOpen();
+		}
 	}
 
 	public void webcamImageObtained(WebcamEvent webcamEvent) {
-//		try {
-//			synchronized (this._nya_raster) {
-//				this._nya_raster.setBuffer(webcamEvent.getImage());
-//			}
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
+
 	}
 	/**
 	 * Is frequency limit enabled?
@@ -296,8 +299,6 @@ public class NyARSingleMarkerBehaviorHolder implements WebcamListener
 				if (!running.get()) {
 					return;
 				}
-
-//				repaintPanel();
 
 				// loop when starting, to wait for images
 				while (starting) {
@@ -493,10 +494,13 @@ class NyARBehavior extends Behavior
 			trgroup = i_trgroup;
 		}
 	}
-
 	public void setUpdateListener(NyARSingleMarkerBehaviorListener i_listener)
 	{
-		synchronized (raster) {
+		if (raster != null) {
+			synchronized (raster) {
+				listener = i_listener;
+			}			
+		} else {
 			listener = i_listener;
 		}
 	}

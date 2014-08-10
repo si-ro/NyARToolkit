@@ -34,6 +34,7 @@ import javax.media.j3d.*;
  */
 public interface NyARSingleMarkerBehaviorListener
 {
+	public void onWebcamOpen();
     /**
      * このリスナは、リスナにマーカーに連動してオブジェクトを操作するチャンスを与えます。
      * リスナはNyARSingleMarkerBehavior関数内のprocessStimulus関数から呼び出されます。

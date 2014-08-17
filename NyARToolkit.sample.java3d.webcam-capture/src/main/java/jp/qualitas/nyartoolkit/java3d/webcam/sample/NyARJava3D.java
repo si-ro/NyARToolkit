@@ -39,6 +39,10 @@ import com.sun.j3d.utils.universe.SimpleUniverse;
  */
 public class NyARJava3D extends JFrame implements NyARSingleMarkerBehaviorListener
 {
+    // set capture driver for fswebcam tool
+//    static {
+//        Webcam.setDriver(new FsWebcamDriver());
+//    }
 	private static final long serialVersionUID = -8472866262481865377L;
 
 	private final String CARCODE_FILE = "/data/patt.hiro";

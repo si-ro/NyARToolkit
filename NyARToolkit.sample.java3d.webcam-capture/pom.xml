@@ -16,6 +16,13 @@
 			<artifactId>NyARToolkit.utils.java3d.webcam</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
+		<dependency>
+			<groupId>com.oracle</groupId>
+			<artifactId>javafx</artifactId>
+			<version>2.2</version>
+			<scope>system</scope>
+			<systemPath>${java.home}/lib/jfxrt.jar</systemPath>
+		</dependency>
 	</dependencies>
 
 	<build>

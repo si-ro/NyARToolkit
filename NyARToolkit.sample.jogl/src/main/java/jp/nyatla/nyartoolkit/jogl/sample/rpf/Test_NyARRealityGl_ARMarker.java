@@ -102,8 +102,8 @@ public class Test_NyARRealityGl_ARMarker implements GLEventListener, JmfCaptureL
 		//マーカライブラリ(ARTKId)の構築
 		this._mklib= new ARTKMarkerTable(10,16,16,25,25,4);
 		//マーカテーブルの作成（２種類）
-		this._mklib.addMarkerFromARPatt(new FileInputStream(PATT_HIRO),0,"HIRO",80,80);
-		this._mklib.addMarkerFromARPatt(new FileInputStream(PATT_KANJI),1,"KANJI",80,80);
+		this._mklib.addMarkerFromARPatt(this.getClass().getResourceAsStream(PATT_HIRO),0,"HIRO",80,80);
+		this._mklib.addMarkerFromARPatt(this.getClass().getResourceAsStream(PATT_KANJI),1,"KANJI",80,80);
 				
 		// 3Dを描画するコンポーネント
 		GLCanvas canvas = new GLCanvas();
@@ -268,14 +268,14 @@ public class Test_NyARRealityGl_ARMarker implements GLEventListener, JmfCaptureL
 	{
 	}
 	
-	private final static String PARAM_FILE = "../../Data/camera_para.dat";
-	private final static String PATT_HIRO = "../../Data/patt.hiro";
-	private final static String PATT_KANJI = "../../Data/patt.kanji";
+	private final static String PARAM_FILE = "/data/camera_para.dat";
+	private final static String PATT_HIRO = "/data/patt.hiro";
+	private final static String PATT_KANJI = "/data/patt.kanji";
 
 	public static void main(String[] args)
 	{
 		try {
-			NyARParam param = NyARParam.createFromARParamFile(new FileInputStream(PARAM_FILE));
+			NyARParam param = NyARParam.createFromARParamFile(Test_NyARRealityGl_ARMarker.class.getClass().getResourceAsStream(PARAM_FILE));
 			new Test_NyARRealityGl_ARMarker(param);
 		} catch (Exception e) {
 			e.printStackTrace();

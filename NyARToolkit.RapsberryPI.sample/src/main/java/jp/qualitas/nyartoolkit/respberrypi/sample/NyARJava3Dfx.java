@@ -115,11 +115,11 @@ public class NyARJava3Dfx extends Application implements
 		// localeの作成とlocateとviewの設定
 		universe = new VirtualUniverse();
 		locale = new Locale(universe);
-		canvas = new Canvas3D(SimpleUniverse.getPreferredConfiguration());
+		//canvas = new Canvas3D(SimpleUniverse.getPreferredConfiguration());
 		View view = new View();
 		ViewPlatform viewPlatform = new ViewPlatform();
 		view.attachViewPlatform(viewPlatform);
-		view.addCanvas3D(canvas);
+		//view.addCanvas3D(canvas);
 		view.setPhysicalBody(new PhysicalBody());
 		view.setPhysicalEnvironment(new PhysicalEnvironment());
 

@@ -89,6 +89,7 @@ public class NyARJava3Dfx extends Application implements
 			System.out.println("vector.lengthSquared()=" + vector.lengthSquared());
 			if (vector.lengthSquared() > 0.15) {
 				System.out.println("Hit!!!");
+				this.appendAnimation("hiragana_01_a.png");
 			}
 			System.out.println("vector.getX()=" + vector.getX());
 			System.out.println("vector.getY()=" + vector.getY());
@@ -183,8 +184,9 @@ public class NyARJava3Dfx extends Application implements
 		nya_behavior.setWebcapOpenListener(this);
 		nya_behavior.open();
 	}
+	
 	private void showWindow() throws IOException {
-		Group root = new Group();
+		root = new Group();
 
 		Scene scene = new Scene(root, 640, 480);
 
@@ -192,22 +194,24 @@ public class NyARJava3Dfx extends Application implements
 		stage.setScene(scene);
 		
 		stage.show();
-		//stage.setFullScreen(true);
+		stage.setFullScreen(true);
 
-		this.appendAnimation(root, "hiragana_01_a.png");
+		this.appendAnimation("hiragana_01_a.png");
 	}
-	private void appendAnimation(final Group root, final String hiraganaImage) {
+	private void appendAnimation(final String hiraganaImage) {
 		final ImageView hiragana = new ImageView(new Image(hiraganaImage));
 		hiragana.setScaleX(0.1);
 		hiragana.setScaleY(0.1);
 
-		Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
-
-		System.out.println("primaryScreenBounds.getWidth():"
-				+ primaryScreenBounds.getWidth());
-		hiragana.setLayoutX(primaryScreenBounds.getWidth() / 2
+//		Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
+//
+//		System.out.println("primaryScreenBounds.getWidth():"
+//				+ primaryScreenBounds.getWidth());
+		int width = 640;
+		int height = 480;
+		hiragana.setLayoutX(width / 2
 				- hiragana.getLayoutBounds().getWidth() / 2);
-		hiragana.setLayoutY(primaryScreenBounds.getHeight() / 2
+		hiragana.setLayoutY(height / 2
 				- hiragana.getLayoutBounds().getHeight() / 2);
 
 		root.getChildren().add(hiragana);

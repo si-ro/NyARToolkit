@@ -7,14 +7,13 @@ import javafx.animation.ParallelTransition;
 import javafx.animation.RotateTransition;
 import javafx.animation.ScaleTransition;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -82,22 +81,29 @@ public class NyARJava3Dfx extends Application implements
 		 */
 		if (i_transform3d != null) {
 			System.out.println("getScale()=" + i_transform3d.getScale());
-	        
+
 			Vector3d vector = new Vector3d();
 			i_transform3d.get(vector);
 			System.out.println("vector.length()=" + vector.length());
-			System.out.println("vector.lengthSquared()=" + vector.lengthSquared());
+			System.out.println("vector.lengthSquared()="
+					+ vector.lengthSquared());
 			if (vector.lengthSquared() > 0.15) {
 				System.out.println("Hit!!!");
-				this.appendAnimation("hiragana_01_a.png");
+				Platform.runLater(new Runnable() {
+					@Override
+					public void run() {
+						appendAnimation("hiragana_01_a.png");
+					}
+				});
+
 			}
 			System.out.println("vector.getX()=" + vector.getX());
 			System.out.println("vector.getY()=" + vector.getY());
 			System.out.println("vector.getZ()=" + vector.getZ());
-			
+
 			Matrix3d matrix = new Matrix3d();
 			i_transform3d.get(matrix);
-			System.out.println("M00" + matrix.getM00());			
+			System.out.println("M00" + matrix.getM00());
 		}
 
 	}
@@ -161,16 +167,16 @@ public class NyARJava3Dfx extends Application implements
 		// 表示ブランチをLocateにセット
 		locale.addBranchGraph(root);
 
-		
 		// ウインドウの設定
-		//setLayout(new BorderLayout());
-		//add(canvas, BorderLayout.CENTER);
+		// setLayout(new BorderLayout());
+		// add(canvas, BorderLayout.CENTER);
 	}
+
 	@Override
 	public void start(Stage stage) throws NyARException, IOException {
 		this.stage = stage;
 		this.showWindow();
-		
+
 		// //NyARToolkitの準備
 		NyARCode ar_code = NyARCode.createFromARPattFile(this.getClass()
 				.getResourceAsStream(CARCODE_FILE), 16, 16);
@@ -184,7 +190,7 @@ public class NyARJava3Dfx extends Application implements
 		nya_behavior.setWebcapOpenListener(this);
 		nya_behavior.open();
 	}
-	
+
 	private void showWindow() throws IOException {
 		root = new Group();
 
@@ -192,27 +198,35 @@ public class NyARJava3Dfx extends Application implements
 
 		stage.setTitle("Translate Transition Demo");
 		stage.setScene(scene);
-		
+
 		stage.show();
 		stage.setFullScreen(true);
 
 		this.appendAnimation("hiragana_01_a.png");
 	}
+
+	private boolean playing = false;
+	
 	private void appendAnimation(final String hiraganaImage) {
+		if (playing) {
+			return;
+		}
+		playing = true;
 		final ImageView hiragana = new ImageView(new Image(hiraganaImage));
 		hiragana.setScaleX(0.1);
 		hiragana.setScaleY(0.1);
 
-//		Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
-//
-//		System.out.println("primaryScreenBounds.getWidth():"
-//				+ primaryScreenBounds.getWidth());
+		// Rectangle2D primaryScreenBounds =
+		// Screen.getPrimary().getVisualBounds();
+		//
+		// System.out.println("primaryScreenBounds.getWidth():"
+		// + primaryScreenBounds.getWidth());
 		int width = 640;
 		int height = 480;
-		hiragana.setLayoutX(width / 2
-				- hiragana.getLayoutBounds().getWidth() / 2);
-		hiragana.setLayoutY(height / 2
-				- hiragana.getLayoutBounds().getHeight() / 2);
+		hiragana.setLayoutX(width / 2 - hiragana.getLayoutBounds().getWidth()
+				/ 2);
+		hiragana.setLayoutY(height / 2 - hiragana.getLayoutBounds().getHeight()
+				/ 2);
 
 		root.getChildren().add(hiragana);
 
@@ -251,18 +265,20 @@ public class NyARJava3Dfx extends Application implements
 		rotate.setToAngle(1440.0);
 
 		ParallelTransition transition = new ParallelTransition(scale, fade);
-		transition.setCycleCount(4);
+		transition.setCycleCount(1);
 		transition.setAutoReverse(false);
 
 		transition.setOnFinished(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
 				System.out.println("on Animation Finished");
 				root.getChildren().remove(hiragana);
+				playing = false;
 			}
 		});
 
 		transition.play();
 	}
+
 	/**
 	 * シーングラフを作って、そのノードを返す。 このノードは40mmの色つき立方体を表示するシーン。ｚ軸を基準に20mm上に浮かせてる。
 	 * 
@@ -284,7 +300,8 @@ public class NyARJava3Dfx extends Application implements
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-    }
+	}
+
 	public static void main(String[] args) {
 		launch(args);
 	}

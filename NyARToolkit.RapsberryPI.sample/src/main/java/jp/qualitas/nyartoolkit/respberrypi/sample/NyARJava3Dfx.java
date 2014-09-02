@@ -40,7 +40,7 @@ import jp.qualitas.nyartoolkit.java3d.utils.raspberrypi.NyARSingleMarkerBehavior
 import jp.qualitas.nyartoolkit.java3d.utils.raspberrypi.NyARSingleMarkerBehaviorListener;
 
 import com.github.sarxos.webcam.Webcam;
-import com.github.sarxos.webcam.ds.gstreamer.GStreamerDriver;
+import com.github.sarxos.webcam.ds.fswebcam.FsWebcamDriver;
 import com.sun.j3d.utils.geometry.ColorCube;
 
 public class NyARJava3Dfx extends Application implements
@@ -50,8 +50,8 @@ public class NyARJava3Dfx extends Application implements
 		String osName = System.getProperty("os.name");
 		String arch = System.getProperty("os.arch");
 		if (osName.equals("Linux") & arch.equals("arm")) {
-			//Webcam.setDriver(new FsWebcamDriver());
-			Webcam.setDriver(new GStreamerDriver());
+			Webcam.setDriver(new FsWebcamDriver());
+			//Webcam.setDriver(new GStreamerDriver());
 		}
 //		org.bridj.Platform
 //				.addEmbeddedLibraryResourceRoot("com/github/sarxos/webcam/ds/buildin/lib/");

@@ -53,5 +53,10 @@
 			<version>1.0.6-SNAPSHOT</version>
 			<scope>compile</scope>
 		</dependency>
+		<dependency>
+			<groupId>com.github.sarxos</groupId>
+			<artifactId>webcam-capture-driver-gstreamer</artifactId>
+			<version>0.3.10-RC7</version>
+		</dependency>
 	</dependencies>
 </project>

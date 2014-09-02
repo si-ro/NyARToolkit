@@ -40,9 +40,8 @@ import jp.qualitas.nyartoolkit.java3d.utils.raspberrypi.NyARSingleMarkerBehavior
 import jp.qualitas.nyartoolkit.java3d.utils.raspberrypi.NyARSingleMarkerBehaviorListener;
 
 import com.github.sarxos.webcam.Webcam;
-import com.github.sarxos.webcam.ds.fswebcam.FsWebcamDriver;
+import com.github.sarxos.webcam.ds.gstreamer.GStreamerDriver;
 import com.sun.j3d.utils.geometry.ColorCube;
-import com.sun.j3d.utils.universe.SimpleUniverse;
 
 public class NyARJava3Dfx extends Application implements
 		NyARSingleMarkerBehaviorListener {
@@ -51,8 +50,12 @@ public class NyARJava3Dfx extends Application implements
 		String osName = System.getProperty("os.name");
 		String arch = System.getProperty("os.arch");
 		if (osName.equals("Linux") & arch.equals("arm")) {
-			Webcam.setDriver(new FsWebcamDriver());
+			//Webcam.setDriver(new FsWebcamDriver());
+			Webcam.setDriver(new GStreamerDriver());
 		}
+//		org.bridj.Platform
+//				.addEmbeddedLibraryResourceRoot("com/github/sarxos/webcam/ds/buildin/lib/");
+//		org.bridj.BridJ.register();
 	}
 	private final String CARCODE_FILE = "/data/patt.hiro";
 
@@ -115,11 +118,11 @@ public class NyARJava3Dfx extends Application implements
 		// localeの作成とlocateとviewの設定
 		universe = new VirtualUniverse();
 		locale = new Locale(universe);
-		//canvas = new Canvas3D(SimpleUniverse.getPreferredConfiguration());
+		// canvas = new Canvas3D(SimpleUniverse.getPreferredConfiguration());
 		View view = new View();
 		ViewPlatform viewPlatform = new ViewPlatform();
 		view.attachViewPlatform(viewPlatform);
-		//view.addCanvas3D(canvas);
+		// view.addCanvas3D(canvas);
 		view.setPhysicalBody(new PhysicalBody());
 		view.setPhysicalEnvironment(new PhysicalEnvironment());
 
@@ -206,7 +209,7 @@ public class NyARJava3Dfx extends Application implements
 	}
 
 	private boolean playing = false;
-	
+
 	private void appendAnimation(final String hiraganaImage) {
 		if (playing) {
 			return;

@@ -5,6 +5,10 @@
 	<artifactId>NyARToolkit.utils.java3d.webcam</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>NyARToolkit.utils.java3d.webcam</name>
+	<properties>
+		<java.version>1.8</java.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>jp.nyatla.nyartoolkit</groupId>
@@ -24,21 +28,21 @@
 		<dependency>
 			<groupId>javax.java3d</groupId>
 			<artifactId>j3dcore</artifactId>
-			<version>1.5.1</version>
+			<version>1.5.2</version>
 			<scope>system</scope>
 			<systemPath>${java.home}/lib/ext/j3dcore.jar</systemPath>
 		</dependency>
 		<dependency>
 			<groupId>java3d</groupId>
 			<artifactId>vecmath</artifactId>
-			<version>1.5.1</version>
+			<version>1.5.2</version>
 			<scope>system</scope>
 			<systemPath>${java.home}/lib/ext/vecmath.jar</systemPath>
 		</dependency>
 		<dependency>
 			<groupId>java3d</groupId>
 			<artifactId>j3d-core-utils</artifactId>
-			<version>1.5.1</version>
+			<version>1.5.2</version>
 			<scope>system</scope>
 			<systemPath>${java.home}/lib/ext/j3dutils.jar</systemPath>
 		</dependency>

@@ -5,7 +5,8 @@
 	<artifactId>NyARToolkit</artifactId>
 	<version>4.4.1</version>
 	<name>NyARToolkit</name>
-	<dependencies>
-
-	</dependencies>
+	<properties>
+		<java.version>1.8</java.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
 </project>

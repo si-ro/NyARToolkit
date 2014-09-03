@@ -40,8 +40,7 @@ import jp.qualitas.nyartoolkit.java3d.utils.raspberrypi.NyARSingleMarkerBehavior
 import jp.qualitas.nyartoolkit.java3d.utils.raspberrypi.NyARSingleMarkerBehaviorListener;
 
 import com.github.sarxos.webcam.Webcam;
-import com.github.sarxos.webcam.ds.fswebcam.FsWebcamDriver;
-import com.github.sarxos.webcam.ds.javacv.JavaCvDriver;
+import com.github.sarxos.webcam.ds.v4l4j.V4l4jDriver;
 import com.sun.j3d.utils.geometry.ColorCube;
 
 public class NyARJava3Dfx extends Application implements
@@ -51,13 +50,13 @@ public class NyARJava3Dfx extends Application implements
 		String osName = System.getProperty("os.name");
 		String arch = System.getProperty("os.arch");
 		if (osName.equals("Linux") & arch.equals("arm")) {
-			//Webcam.setDriver(new FsWebcamDriver());
-			//Webcam.setDriver(new GStreamerDriver());
-			Webcam.setDriver(new JavaCvDriver());
+			// Webcam.setDriver(new FsWebcamDriver());
+			// Webcam.setDriver(new GStreamerDriver());
+			Webcam.setDriver(new V4l4jDriver());
 		}
-//		org.bridj.Platform
-//				.addEmbeddedLibraryResourceRoot("com/github/sarxos/webcam/ds/buildin/lib/");
-//		org.bridj.BridJ.register();
+		// org.bridj.Platform
+		// .addEmbeddedLibraryResourceRoot("com/github/sarxos/webcam/ds/buildin/lib/");
+		// org.bridj.BridJ.register();
 	}
 	private final String CARCODE_FILE = "/data/patt.hiro";
 

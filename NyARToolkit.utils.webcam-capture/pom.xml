@@ -44,7 +44,7 @@
 		</dependency>
         <dependency>
             <groupId>com.github.sarxos</groupId>
-            <artifactId>webcam-capture-driver-javacv</artifactId>
+            <artifactId>webcam-capture-driver-v4l4j</artifactId>
             <version>0.3.10-RC7</version>
         </dependency>
 		<dependency>

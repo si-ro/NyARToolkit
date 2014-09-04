@@ -19,7 +19,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.ArcTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
-import javafx.scene.shape.QuadCurveTo;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -90,7 +89,7 @@ public class NyARJava3Dfx extends Application implements
 
 	private Random random = new Random();
 
-	public void onUpdate(boolean i_is_marker_exist, Transform3D i_transform3d) {
+	public void onUpdate(boolean i_is_marker_exist, final Transform3D i_transform3d) {
 		/*
 		 * TODO:Please write your behavior operation code here.
 		 * マーカーの姿勢を元に他の３Dオブジェクトを操作するときは、ここに処理を書きます。

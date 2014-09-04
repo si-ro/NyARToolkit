@@ -1,11 +1,12 @@
 package jp.qualitas.nyartoolkit.respberrypi.sample;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Random;
 
-import javafx.animation.FadeTransition;
-import javafx.animation.ParallelTransition;
-import javafx.animation.RotateTransition;
-import javafx.animation.ScaleTransition;
+import javafx.animation.PathTransition;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -14,6 +15,12 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.ArcTo;
+import javafx.scene.shape.MoveTo;
+import javafx.scene.shape.Path;
+import javafx.scene.shape.QuadCurveTo;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -78,32 +85,38 @@ public class NyARJava3Dfx extends Application implements
 
 	private Group root;
 
+	private int width = 640;
+	private int height = 480;
+
+	private Random random = new Random();
+
 	public void onUpdate(boolean i_is_marker_exist, Transform3D i_transform3d) {
 		/*
 		 * TODO:Please write your behavior operation code here.
 		 * マーカーの姿勢を元に他の３Dオブジェクトを操作するときは、ここに処理を書きます。
 		 */
 		if (i_transform3d != null) {
-			System.out.println("getScale()=" + i_transform3d.getScale());
-
 			Vector3d vector = new Vector3d();
 			i_transform3d.get(vector);
+
+			// if (vector.lengthSquared() > 0.15) {
+			System.out.println("Hit!!!");
+			System.out.println("getScale()=" + i_transform3d.getScale());
 			System.out.println("vector.length()=" + vector.length());
 			System.out.println("vector.lengthSquared()="
 					+ vector.lengthSquared());
-			if (vector.lengthSquared() > 0.15) {
-				System.out.println("Hit!!!");
-				Platform.runLater(new Runnable() {
-					@Override
-					public void run() {
-						appendAnimation("hiragana_01_a.png");
-					}
-				});
-
-			}
 			System.out.println("vector.getX()=" + vector.getX());
 			System.out.println("vector.getY()=" + vector.getY());
 			System.out.println("vector.getZ()=" + vector.getZ());
+			Platform.runLater(new Runnable() {
+				@Override
+				public void run() {
+					//appendAnimation("hiragana_01_a.png", i_transform3d);
+					showHiraganaAnimation(i_transform3d);
+				}
+			});
+
+			// }
 
 			Matrix3d matrix = new Matrix3d();
 			i_transform3d.get(matrix);
@@ -198,35 +211,111 @@ public class NyARJava3Dfx extends Application implements
 	private void showWindow() throws IOException {
 		root = new Group();
 
-		Scene scene = new Scene(root, 640, 480);
+		Scene scene = new Scene(root, width, height);
 
-		stage.setTitle("Translate Transition Demo");
+		stage.setTitle("JavaFX ARToolkit Demo");
 		stage.setScene(scene);
 
 		stage.show();
 		stage.setFullScreen(true);
 
-		this.appendAnimation("hiragana_01_a.png");
+		// this.appendAnimation("hiragana_01_a.png", null);
+		showHiraganaAnimation(null);
 	}
 
+	synchronized private void showHiraganaAnimation(Transform3D i_transform3d) {
+		if (currentHiraganaIndex >= hiragana_a.size()) {
+			currentHiraganaIndex = 0;
+		}
+		appendAnimation(hiragana_a.get(currentHiraganaIndex++), i_transform3d);
+	}
+	private int currentHiraganaIndex = 0;
+	private List<String> hiragana_a = new ArrayList<String>() {
+		{
+			add("hiragana_01_a.png");
+		}
+	};;
+	private List<String> hikouki = new ArrayList<String>() {
+		{
+			add("hiragana_47_hi.png");
+			add("hiragana_15_ko.png");
+			add("hiragana_03_u.png");
+			add("hiragana_12_ki.png");
+		}
+	};;
 	private boolean playing = false;
 
-	private void appendAnimation(final String hiraganaImage) {
-		if (playing) {
+	private Rectangle currentTargetRect;
+	private int rectWidth = 200;
+	private int rectHeight = 150;
+	private int defaultRectX = width / 2 - rectWidth / 2;
+	private int defaultRectY = height / 2 - rectHeight / 2;
+	private int currentRectX = width / 2 - rectWidth / 2;
+	private int currentRectY = height / 2 - rectHeight / 2;
+
+	private final int MAX_SHOW_ANIMATION_COUNT = 10;
+	private int currentAnimationCount = 0;
+	private long previousAnimationTime = 0;
+
+	private boolean isShowTargetRectangle = false;
+
+	private void showTargetRectangle(final Transform3D i_transform3d) {
+		if (i_transform3d != null) {
+			// かなり適当な対象物の位置特定
+			Vector3d vector = new Vector3d();
+			i_transform3d.get(vector);
+			double addjustX = vector.getX() * 2000;
+			double addjustY = vector.getY() * 2000;
+			currentRectX = defaultRectX + (int) addjustX * -1;
+			currentRectY = defaultRectY + (int) addjustY * -1;
+		}
+		if (!isShowTargetRectangle) {
 			return;
 		}
-		playing = true;
-		final ImageView hiragana = new ImageView(new Image(hiraganaImage));
-		hiragana.setScaleX(0.1);
-		hiragana.setScaleY(0.1);
+		if (currentTargetRect != null) {
+			root.getChildren().remove(currentTargetRect);
+		}
 
-		// Rectangle2D primaryScreenBounds =
-		// Screen.getPrimary().getVisualBounds();
-		//
-		// System.out.println("primaryScreenBounds.getWidth():"
-		// + primaryScreenBounds.getWidth());
-		int width = 640;
-		int height = 480;
+		currentTargetRect = new Rectangle(currentRectX, currentRectY,
+				rectWidth, rectHeight);
+		currentTargetRect.setStroke(Color.GRAY);
+		currentTargetRect.setFill(null);
+		root.getChildren().add(currentTargetRect);
+
+	}
+
+	private void appendAnimation(final String hiraganaImageName,
+			final Transform3D i_transform3d) {
+		showTargetRectangle(i_transform3d);
+
+		// if (playing) {
+		// return;
+		// }
+		if (currentAnimationCount > MAX_SHOW_ANIMATION_COUNT) {
+			return;
+		}
+
+		long currentTime = new Date().getTime();
+		long timePeriod = currentTime - previousAnimationTime;
+
+		double period = (double) timePeriod / 1000;
+		System.out.println("timePeriod=" + period);
+		if (period < 0.5) {
+			// アニメーション表示の間隔をあける
+			return;
+		}
+		System.out.println("show animation.");
+		previousAnimationTime = currentTime;
+
+		currentAnimationCount++;
+		int centerX = currentRectX - rectWidth / 2;
+		int centerY = currentRectY - rectHeight / 2;
+		playing = true;
+		Image hiraganaImage = new Image(hiraganaImageName);
+		final ImageView hiragana = new ImageView(hiraganaImage);
+		hiragana.setScaleX(0.8);
+		hiragana.setScaleY(0.8);
+
 		hiragana.setLayoutX(width / 2 - hiragana.getLayoutBounds().getWidth()
 				/ 2);
 		hiragana.setLayoutY(height / 2 - hiragana.getLayoutBounds().getHeight()
@@ -234,7 +323,54 @@ public class NyARJava3Dfx extends Application implements
 
 		root.getChildren().add(hiragana);
 
-		// 移動を行なうアニメーション
+		// アニメーションを行なわせるパス
+		// Rectangle path = new Rectangle(80, 80, 250, 200);
+		Path path = new Path();
+		// 枠線を越えないようにクリッピングする
+		// path.setClip(new Rectangle(0, 0, width, height));
+
+		MoveTo moveTo = new MoveTo();
+		moveTo.setX(centerX);
+		moveTo.setY(centerY);
+		path.getElements().add(moveTo);
+
+		boolean leftOfRight = random.nextInt() % 2 == 0;
+		int negative = -1;
+		if (leftOfRight) {
+			negative = 1;
+		}
+		ArcTo arcTo = new ArcTo();
+		arcTo.setX(centerX + 120 * negative);
+		arcTo.setY(centerY);
+
+		float radiusX = 50.0f + random.nextFloat() * 50.0f;
+		float radiusY = 50.0f + random.nextFloat() * 50.0f;
+		arcTo.setRadiusX(radiusX);
+		arcTo.setRadiusY(radiusY);
+		// arcTo.setXAxisRotation(-10.0);
+		arcTo.setSweepFlag(leftOfRight);
+
+		path.getElements().add(arcTo);
+
+		// アニメーションの開始点に移動させる
+		// hiragana.setTranslateX(80.0 - hiraganaImage.getWidth()/2.0);
+		// hiragana.setTranslateY(80.0 - hiraganaImage.getHeight()/2.0);
+
+		// 移動のアニメーション
+		PathTransition transition = new PathTransition();
+		// アニメーションの時間は4000ミリ秒
+		transition.setDuration(Duration.millis(1_200L));
+		// アニメーション対象の設定
+		transition.setNode(hiragana);
+
+		// アニメーションを行なわせるパス
+		transition.setPath(path);
+		// パスに沿って回転させる
+		// transition.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
+		// 繰り返し回数の設定
+		// transition.setCycleCount(2);
+
+		// // 移動を行なうアニメーション
 		// TranslateTransition transition = new TranslateTransition();
 		// // アニメーション対象の設定
 		// transition.setNode(hiragana);
@@ -251,32 +387,34 @@ public class NyARJava3Dfx extends Application implements
 
 		// System.out.println(transition.getInterpolator());
 
-		ScaleTransition scale = new ScaleTransition(Duration.millis(4_000),
-				hiragana);
-		scale.setFromX(0.1);
-		scale.setFromY(0.1);
-		scale.setToX(2.0);
-		scale.setToY(2.0);
+		// ScaleTransition scale = new ScaleTransition(Duration.millis(4_000),
+		// hiragana);
+		// scale.setFromX(0.1);
+		// scale.setFromY(0.1);
+		// scale.setToX(2.0);
+		// scale.setToY(2.0);
+		//
+		// FadeTransition fade = new FadeTransition(Duration.millis(3000),
+		// hiragana);
+		// fade.setFromValue(0.1);
+		// fade.setToValue(1.0);
 
-		FadeTransition fade = new FadeTransition(Duration.millis(3000),
-				hiragana);
-		fade.setFromValue(0.1);
-		fade.setToValue(1.0);
+		// RotateTransition rotate = new
+		// RotateTransition(Duration.millis(4_000),
+		// hiragana);
+		// rotate.setFromAngle(0.0);
+		// rotate.setToAngle(1440.0);
 
-		RotateTransition rotate = new RotateTransition(Duration.millis(4_000),
-				hiragana);
-		rotate.setFromAngle(0.0);
-		rotate.setToAngle(1440.0);
-
-		ParallelTransition transition = new ParallelTransition(scale, fade);
-		transition.setCycleCount(1);
-		transition.setAutoReverse(false);
+		// ParallelTransition transition = new ParallelTransition(scale, fade);
+		// transition.setCycleCount(1);
+		// transition.setAutoReverse(false);
 
 		transition.setOnFinished(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
 				System.out.println("on Animation Finished");
 				root.getChildren().remove(hiragana);
 				playing = false;
+				currentAnimationCount--;
 			}
 		});
 

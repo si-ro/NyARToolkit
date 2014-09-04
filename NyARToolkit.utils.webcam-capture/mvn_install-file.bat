@@ -1,0 +1,1 @@
+mvn install:install-file -Dfile=v4l4j.jar -DgroupId=au.edu.jcu -DartifactId=v4l4j -Dversion=0.9-WC -Dpackaging=jar -DgeneratePom=true

@@ -73,6 +73,25 @@
 						</archive>
 					</configuration>
 				</plugin>
+				<plugin>
+					<groupId>com.zenjava</groupId>
+					<artifactId>javafx-maven-plugin</artifactId>
+					<version>8.1.1</version>
+					<executions>
+						<execution>
+							<phase>package</phase>
+							<goals>
+								<goal>jar</goal>
+							</goals>
+						</execution>
+					</executions>
+					<configuration>
+						<mainClass>jp.qualitas.nyartoolkit.respberrypi.sample.NyARJava3Dfx</mainClass>
+						<bundleArguments>
+							<!-- just to w/a https://github.com/zonski/javafx-maven-plugin/pull/72 -->
+						</bundleArguments>
+					</configuration>
+				</plugin>
 			</plugins>
 		</pluginManagement>
 	</build>

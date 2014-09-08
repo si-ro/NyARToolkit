@@ -89,7 +89,8 @@ public class NyARJava3Dfx extends Application implements
 
 	private Random random = new Random();
 
-	public void onUpdate(boolean i_is_marker_exist, final Transform3D i_transform3d) {
+	public void onUpdate(boolean i_is_marker_exist,
+			final Transform3D i_transform3d) {
 		/*
 		 * TODO:Please write your behavior operation code here.
 		 * マーカーの姿勢を元に他の３Dオブジェクトを操作するときは、ここに処理を書きます。
@@ -110,7 +111,7 @@ public class NyARJava3Dfx extends Application implements
 			Platform.runLater(new Runnable() {
 				@Override
 				public void run() {
-					//appendAnimation("hiragana_01_a.png", i_transform3d);
+					// appendAnimation("hiragana_01_a.png", i_transform3d);
 					showHiraganaAnimation(i_transform3d);
 				}
 			});
@@ -222,13 +223,21 @@ public class NyARJava3Dfx extends Application implements
 		showHiraganaAnimation(null);
 	}
 
-	synchronized private void showHiraganaAnimation(Transform3D i_transform3d) {
-		if (currentHiraganaIndex >= hiragana_a.size()) {
+	// private void showHiraganaAnimation(Transform3D i_transform3d) {
+	// if (currentHiraganaIndex >= hiragana_a.size()) {
+	// currentHiraganaIndex = 0;
+	// }
+	// appendAnimation(hiragana_a.get(currentHiraganaIndex++), i_transform3d);
+	// }
+	private int currentHiraganaIndex = 0;
+
+	private void showHiraganaAnimation(Transform3D i_transform3d) {
+		if (currentHiraganaIndex >= katakana.size()) {
 			currentHiraganaIndex = 0;
 		}
-		appendAnimation(hiragana_a.get(currentHiraganaIndex++), i_transform3d);
+		appendAnimation(katakana.get(currentHiraganaIndex++), i_transform3d);
 	}
-	private int currentHiraganaIndex = 0;
+
 	private List<String> hiragana_a = new ArrayList<String>() {
 		{
 			add("hiragana_01_a.png");
@@ -241,7 +250,37 @@ public class NyARJava3Dfx extends Application implements
 			add("hiragana_03_u.png");
 			add("hiragana_12_ki.png");
 		}
-	};;
+	};
+	private List<String> katakana = new ArrayList<String>() {
+		{
+			add("katakana/katakana_01_a.png");
+			add("katakana/katakana_02_i.png");
+			add("katakana/katakana_03_u.png");
+			add("katakana/katakana_05_o.png");
+			add("katakana/katakana_06_a2.png");
+			add("katakana/katakana_08_vu.png");
+			add("katakana/katakana_10_o2.png");
+			add("katakana/katakana_11_ka.png");
+			add("katakana/katakana_12_ki.png");
+			add("katakana/katakana_13_ku.png");
+			add("katakana/katakana_15_ko.png");
+			add("katakana/katakana_18_gu.png");
+			add("katakana/katakana_21_sa.png");
+			add("katakana/katakana_22_shi.png");
+			add("katakana/katakana_24_se.png");
+			add("katakana/katakana_25_so.png");
+			add("katakana/katakana_28_zu.png");
+			add("katakana/katakana_29_ze.png");
+			add("katakana/katakana_30_zo.png");
+			add("katakana/katakana_31_ta.png");
+			add("katakana/katakana_32_ti.png");
+			add("katakana/katakana_33_tsu.png");
+			add("katakana/katakana_34_te.png");
+			add("katakana/katakana_35_to.png");
+			add("katakana/katakana_36_da.png");
+			add("katakana/katakana_37_di.png");
+		}
+	};
 	private boolean playing = false;
 
 	private Rectangle currentTargetRect;
@@ -256,7 +295,7 @@ public class NyARJava3Dfx extends Application implements
 	private int currentAnimationCount = 0;
 	private long previousAnimationTime = 0;
 
-	private boolean isShowTargetRectangle = false;
+	private boolean isShowTargetRectangle = true;
 
 	private void showTargetRectangle(final Transform3D i_transform3d) {
 		if (i_transform3d != null) {
@@ -287,9 +326,6 @@ public class NyARJava3Dfx extends Application implements
 			final Transform3D i_transform3d) {
 		showTargetRectangle(i_transform3d);
 
-		// if (playing) {
-		// return;
-		// }
 		if (currentAnimationCount > MAX_SHOW_ANIMATION_COUNT) {
 			return;
 		}
@@ -312,8 +348,8 @@ public class NyARJava3Dfx extends Application implements
 		playing = true;
 		Image hiraganaImage = new Image(hiraganaImageName);
 		final ImageView hiragana = new ImageView(hiraganaImage);
-		hiragana.setScaleX(0.8);
-		hiragana.setScaleY(0.8);
+		hiragana.setScaleX(1.2);
+		hiragana.setScaleY(1.2);
 
 		hiragana.setLayoutX(width / 2 - hiragana.getLayoutBounds().getWidth()
 				/ 2);
@@ -346,7 +382,7 @@ public class NyARJava3Dfx extends Application implements
 		float radiusY = 50.0f + random.nextFloat() * 50.0f;
 		arcTo.setRadiusX(radiusX);
 		arcTo.setRadiusY(radiusY);
-		// arcTo.setXAxisRotation(-10.0);
+
 		arcTo.setSweepFlag(leftOfRight);
 
 		path.getElements().add(arcTo);

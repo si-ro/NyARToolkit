@@ -109,8 +109,11 @@ public class NyARSingleMarkerBehaviorHolder implements WebcamListener
 		//キャプチャの準備
 		Dimension size = WebcamResolution.QVGA.getSize();
 
-		//this._capture = Webcam.getWebcams().get(1);
-		this._capture = Webcam.getDefault();
+		try {
+			this._capture = Webcam.getWebcams().get(1);
+		} catch (Exception e) {
+			this._capture = Webcam.getDefault();
+		}
 		this._capture.setViewSize(size);
 		this._capture.addWebcamListener(this);
 		this.updater = new ImageUpdater();

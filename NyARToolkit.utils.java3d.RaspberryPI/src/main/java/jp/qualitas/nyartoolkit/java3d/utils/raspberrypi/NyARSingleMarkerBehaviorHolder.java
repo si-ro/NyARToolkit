@@ -108,19 +108,22 @@ public class NyARSingleMarkerBehaviorHolder implements WebcamListener
 		this._cparam = i_cparam;
 		//キャプチャの準備
 		Dimension size = WebcamResolution.QVGA.getSize();
-
-		//this._capture = Webcam.getWebcams().get(1);
-		this._capture = Webcam.getDefault();
+		try {
+			this._capture = Webcam.getWebcams().get(1);
+		} catch (Exception e) {
+			this._capture = Webcam.getDefault();
+		}
 		this._capture.setViewSize(size);
 		this._capture.addWebcamListener(this);
 		this.updater = new ImageUpdater();
-		
-		
+
 //		this._nya_raster = new J3dNyARRaster_RGB(scr_size.w, scr_size.h);
 //		this._nya =NyARSingleDetectMarker.createInstance(this._cparam, i_ar_code, i_marker_width);
 //		this._nya_behavior = new NyARBehavior(this._nya, this._nya_raster, i_rate);
 	}
-
+	public J3dNyARRaster_RGB getNyARRaster() {
+		return this._nya_raster;
+	}
 	public BufferedImage getImage() {
 		return this.image;
 	}

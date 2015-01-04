@@ -29,16 +29,13 @@ and copy j3dcore.jar, vecmath.jar, j3dutils.jar to ${java.home}/lib/ext
 ### Run sample app.
 Run sample application using javafx-maven-plugin.
 ```
-cd NyARToolkit.RaspberryPI.sample
+git clone https://github.com/si-ro/NyARToolkit.git
+cd NyARToolkit/NyARToolkit.RaspberryPI.sample
 mvn jfx:run
 ```
 
 ### (optional) Import project to Eclipse.
-1. clone this repository.
-```
-git clone https://github.com/si-ro/NyARToolkit.git
-```
-2. Run maven eclipse:eclipse goal to several maven projects. 
+1. Run maven eclipse:eclipse goal to several maven projects. 
 ```
 cd NyARToolkit
 mvn eclipse:eclipse -f NyARToolkit.utils.webcam-capture\pom.xml
@@ -48,5 +45,5 @@ mvn eclipse:eclipse -f NyARToolkit.utils.java3d.RaspberryPI\pom.xml
 mvn eclipse:eclipse -f NyARToolkit.RaspberryPI.sample\pom.xml
 ```
 or you can use NyARToolkit/setup.bat.
-3. Launch Eclipse and import as thease projects (import as existing projects).
-4. Convert thease projects to Maven Project in package Explorer.
+2. Launch Eclipse and import as thease projects (import as existing projects).
+3. Convert thease projects to Maven Project in package Explorer.

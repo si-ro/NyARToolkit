@@ -44,6 +44,6 @@ mvn eclipse:eclipse -f NyARToolkit.utils.java3d.webcam-capture\pom.xml
 mvn eclipse:eclipse -f NyARToolkit.utils.java3d.RaspberryPI\pom.xml
 mvn eclipse:eclipse -f NyARToolkit.RaspberryPI.sample\pom.xml
 ```
-or you can use NyARToolkit/setup.bat.
-2. Launch Eclipse and import as thease projects (import as existing projects).
+or you can use NyARToolkit/setup.bat.  
+2. Launch Eclipse and import as thease projects (import as existing projects).  
 3. Convert thease projects to Maven Project in package Explorer.

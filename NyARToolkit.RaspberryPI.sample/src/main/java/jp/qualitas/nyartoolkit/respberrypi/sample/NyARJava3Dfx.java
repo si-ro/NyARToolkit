@@ -51,7 +51,7 @@ import com.sun.j3d.utils.geometry.ColorCube;
 
 public class NyARJava3Dfx extends Application implements
 		NyARSingleMarkerBehaviorListener {
-	// set capture driver for fswebcam tool
+	// set capture driver for v4l4j tool
 	static {
 		String osName = System.getProperty("os.name");
 		String arch = System.getProperty("os.arch");

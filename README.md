@@ -26,6 +26,13 @@ https://java3d.java.net/binary-builds.html
 => j3d-1_5_2-windows-i586.exe
 and copy j3dcore.jar, vecmath.jar, j3dutils.jar to ${java.home}/lib/ext  
 
+### Run sample app.
+Run sample application using javafx-maven-plugin.
+```
+cd NyARToolkit.RaspberryPI.sample
+mvn jfx:run
+```
+
 ### (optional) Import project to Eclipse.
 1. clone this repository.
 ```
@@ -43,10 +50,3 @@ mvn eclipse:eclipse -f NyARToolkit.RaspberryPI.sample\pom.xml
 or you can use NyARToolkit/setup.bat.
 3. Launch Eclipse and import as thease projects (import as existing projects).
 4. Convert thease projects to Maven Project in package Explorer.
-
-### Run sample app.
-Run sample application using javafx-maven-plugin.
-```
-cd NyARToolkit.RaspberryPI.sample
-mvn jfx:run
-```
